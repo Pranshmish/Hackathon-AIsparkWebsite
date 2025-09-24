@@ -40,7 +40,7 @@ export function GhostButton({ as = 'a', href, children, className = '', ...rest 
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
       transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-      className={`inline-flex items-center justify-center rounded-md px-4 py-2 text-sm text-[color:var(--text-secondary,#C9D2E1)] hover:text-[color:var(--text-primary,#F2F5F9)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[rgba(0,229,255,0.35)] ring-offset-[color:var(--bg-base,#0A0B0E)] ${className}`}
+      className={`inline-flex items-center justify-center rounded-md px-4 py-2 text-sm text-[color:var(--text-secondary,#C9D2E1)] hover:text-[#C3145A] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[rgba(195,20,90,0.35)] ring-offset-[color:var(--bg-base,#0A0B0E)] ${className}`}
       {...rest}
     >
       {children}
