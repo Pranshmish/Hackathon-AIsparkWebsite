@@ -1,75 +1,167 @@
 {
   "seo": {
-    "title": "AI GENESIS — Build bold AI",
-    "description": "Cinematic AI-themed 3D, premium components, and high-contrast dark UI for a conversion-first hackathon landing.",
-    "og_image": "/og/aigenesis_v2.png"
+    "title": "AI GENESIS — The Future Starts Here",
+    "description": "Join the ultimate AI hackathon where visionaries, coders, and creators come together to build groundbreaking AI solutions. Compete, learn, and shape the future.",
+    "og_image": "/og/aigenesis.png"
   },
   "header": {
     "logo_text": "AI GENESIS",
-    "nav": ["Why us", "Tracks", "Prizes", "Schedule", "FAQ"],
-    "cta_primary": { "label": "Register", "href": "#register" },
-    "cta_secondary": { "label": "Join Discord", "href": "#community" }
+    "nav": [
+      "About",
+      "Tracks",
+      "Prizes",
+      "Schedule",
+      "FAQ"
+    ],
+    "cta_primary": {
+      "label": "Register",
+      "href": "#register"
+    },
+    "cta_secondary": {
+      "label": "Join Discord",
+      "href": "#community"
+    }
   },
   "hero": {
-    "eyebrow": "Official 2025",
-    "headline": "Design that speaks volumes",
-    "subhead": "A dark, cinematic AI hackathon landing with real-time 3D and crisp micro‑interactions.",
-    "primary_cta": { "label": "Get started", "href": "#register" },
-    "secondary_cta": { "label": "See tracks", "href": "#tracks" },
-    "trust_badge": "Trusted by builders worldwide"
+    "eyebrow": "Official Hackathon 2025",
+    "headline": "Build Bold AI at AI GENESIS",
+    "subhead": "A global hackathon bringing together developers, designers, and innovators to push the boundaries of artificial intelligence.",
+    "primary_cta": {
+      "label": "Register Now",
+      "href": "#register"
+    },
+    "secondary_cta": {
+      "label": "Explore Tracks",
+      "href": "#tracks"
+    },
+    "trust_badge": "Trusted by 1,000+ innovators worldwide"
   },
-  "logos": ["/logos/a.svg", "/logos/b.svg", "/logos/c.svg", "/logos/d.svg"],
+  "logos": [
+    "/logos/a.svg",
+    "/logos/b.svg",
+    "/logos/c.svg",
+    "/logos/d.svg"
+  ],
   "features": {
-    "title": "Why join",
+    "title": "Why AI GENESIS?",
     "items": [
-      { "icon": "zap", "title": "Cinematic 3D", "body": "Neural ribbons, circuit orbits, programmable badges, and holograms." },
-      { "icon": "sparkles", "title": "Premium UI", "body": "Shadcn + Radix components with Motion micro‑interactions." },
-      { "icon": "gauge", "title": "Fast & accessible", "body": "Optimized assets, AA contrast, reduced‑motion support." }
+      {
+        "icon": "zap",
+        "title": "Cutting-Edge AI",
+        "body": "Dive into the latest in AI agents, vision models, infra tools, and consumer apps."
+      },
+      {
+        "icon": "sparkles",
+        "title": "Community & Mentorship",
+        "body": "Learn from top mentors, collaborate with peers, and grow your skills."
+      },
+      {
+        "icon": "gauge",
+        "title": "Global Impact",
+        "body": "Build solutions that don’t just impress judges but also make a difference."
+      }
     ]
   },
   "tracks": {
-    "title": "Tracks",
-    "subhead": "Agents · Vision · Infra · Consumer",
+    "title": "Hackathon Tracks",
+    "subhead": "Choose your battlefield",
     "cards": [
-      { "title": "Agents", "body": "Autonomous workflows that deliver outcomes." },
-      { "title": "Vision", "body": "Perception for industry and accessibility." },
-      { "title": "Infra", "body": "Tooling for evals, safety, ops." },
-      { "title": "Consumer", "body": "Delightful products people love." }
+      {
+        "title": "Agents",
+        "body": "Design autonomous AI workflows to solve real-world problems."
+      },
+      {
+        "title": "Vision",
+        "body": "Revolutionize accessibility, healthcare, and industry with computer vision."
+      },
+      {
+        "title": "Infra",
+        "body": "Develop scalable tools for safety, evaluation, and AI infrastructure."
+      },
+      {
+        "title": "Consumer",
+        "body": "Build AI-powered products people love to use every day."
+      }
     ]
   },
   "prizes": {
-    "title": "Prizes",
+    "title": "Prizes & Recognition",
     "items": [
-      { "name": "Grand Prize", "value": 1000000 },
-      { "name": "Runner‑up", "value": 500000 },
-      { "name": "Third Place", "value": 300000 },
-      { "name": "Special Awards", "value": 200000 }
+      {
+        "name": "Grand Prize",
+        "value": 1000000
+      },
+      {
+        "name": "Runner-up",
+        "value": 500000
+      },
+      {
+        "name": "Third Place",
+        "value": 300000
+      },
+      {
+        "name": "Special Awards",
+        "value": 200000
+      }
     ],
     "total": 2000000,
-    "cta": { "label": "Register now", "href": "#register" }
+    "cta": {
+      "label": "Register Today",
+      "href": "#register"
+    }
   },
   "timeline": {
-    "title": "Key dates",
+    "title": "Hackathon Schedule",
     "items": [
-      { "label": "Reg opens", "date": "2025-09-25" },
-      { "label": "Workshops", "date": "2025-10-05" },
-      { "label": "Hack days", "date": "2025-10-12" },
-      { "label": "Demo day", "date": "2025-10-14" },
-      { "label": "Winners", "date": "2025-10-15" }
+      {
+        "label": "Registrations Open",
+        "date": "2025-09-25"
+      },
+      {
+        "label": "Workshops Begin",
+        "date": "2025-10-05"
+      },
+      {
+        "label": "Hackathon Days",
+        "date": "2025-10-12"
+      },
+      {
+        "label": "Demo Day",
+        "date": "2025-10-14"
+      },
+      {
+        "label": "Winner Announcement",
+        "date": "2025-10-15"
+      }
     ]
   },
   "faq": {
-    "title": "FAQs",
+    "title": "Frequently Asked Questions",
     "items": [
-      { "q": "Who can participate?", "a": "Open to all over 16; teams up to 4." },
-      { "q": "Submission format?", "a": "GitHub repo + 2‑min video + README." },
-      { "q": "Judging?", "a": "Impact, originality, technical depth, polish." }
+      {
+        "q": "Who can participate?",
+        "a": "AI GENESIS is open to anyone 16+ worldwide. Teams can have up to 4 members."
+      },
+      {
+        "q": "What do I submit?",
+        "a": "A GitHub repository with your code, a README, and a 2-minute demo video."
+      },
+      {
+        "q": "How are projects judged?",
+        "a": "By impact, originality, technical execution, and user experience."
+      }
     ]
   },
   "final_cta": {
-    "headline": "Join 1,000+ builders",
-    "subhead": "Kickoff Oct 12, 2025 (IST)",
-    "cta_primary": { "label": "Register", "href": "#register" },
-    "cta_secondary": { "label": "Join Discord", "href": "#community" }
+    "headline": "Be Part of the AI Revolution",
+    "subhead": "Hackathon kicks off October 12, 2025 (IST)",
+    "cta_primary": {
+      "label": "Register Now",
+      "href": "#register"
+    },
+    "cta_secondary": {
+      "label": "Join Our Discord",
+      "href": "#community"
+    }
   }
 }
