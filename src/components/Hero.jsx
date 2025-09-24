@@ -1,11 +1,11 @@
 import { Suspense, useMemo, useRef } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { Html, Float, Environment } from '@react-three/drei'
+import { Html, Float, Environment, Instances, Instance } from '@react-three/drei'
 import { motion, useReducedMotion } from 'framer-motion'
 import * as THREE from 'three'
 
 function ParallaxCameraTilt({ maxX = 0.12, maxY = 0.12 }) {
-  const { camera, viewport } = useThree()
+  const { camera } = useThree()
   const pointer = useThree((s) => s.pointer)
   useFrame(() => {
     camera.rotation.x = THREE.MathUtils.lerp(camera.rotation.x, pointer.y * maxY, 0.05)
@@ -20,103 +20,140 @@ function PointerGlow() {
   const { pointer } = useThree()
   useFrame(() => {
     if (!light.current) return
-    light.current.position.x = THREE.MathUtils.lerp(light.current.position.x, pointer.x * 3, 0.1)
-    light.current.position.y = THREE.MathUtils.lerp(light.current.position.y, pointer.y * 2, 0.1)
+    light.current.position.x = THREE.MathUtils.lerp(light.current.position.x, pointer.x * 3, 0.12)
+    light.current.position.y = THREE.MathUtils.lerp(light.current.position.y, pointer.y * 2, 0.12)
   })
   return <pointLight ref={light} color={'#00E5FF'} intensity={1.1} distance={6} />
 }
 
-function NeuralRibbons() {
-  const material = useMemo(() => new THREE.MeshStandardMaterial({ color: '#0F1116', emissive: '#00E5FF', emissiveIntensity: 1.1, roughness: 0.6, metalness: 0.1 }), [])
-  const curves = useMemo(() => {
-    const makeCurve = (seed) => {
-      const rng = new THREE.MathUtils.seededRandom
-      const pts = new Array(8).fill(0).map((_, i) => new THREE.Vector3(
-        Math.sin(i * 0.6 + seed) * 1.5,
-        Math.cos(i * 0.5 + seed) * 0.6,
-        (i - 4) * 0.4
-      ))
-      return new THREE.CatmullRomCurve3(pts)
-    }
-    return [makeCurve(0.1), makeCurve(0.7), makeCurve(1.3)]
-  }, [])
-  const meshes = useRef([])
+function NeonCore() {
+  const mesh = useRef()
   useFrame((state) => {
     const t = state.clock.getElapsedTime()
-    meshes.current.forEach((m, i) => {
-      if (!m) return
-      m.material.emissiveIntensity = 0.9 + Math.sin(t * 2 + i) * 0.25
-    })
+    if (!mesh.current) return
+    mesh.current.rotation.y = t * 0.15
+    const mat = mesh.current.material
+    mat.emissiveIntensity = 0.7 + Math.sin(t * 1.6) * 0.25
   })
   return (
-    <group scale={4.6}>
-      {curves.map((curve, i) => (
-        <mesh key={i} ref={(el) => (meshes.current[i] = el)} material={material}>
-          <tubeGeometry args={[curve, 200, 0.04, 8, false]} />
-        </mesh>
-      ))}
-    </group>
+    <mesh ref={mesh} scale={0.9}>
+      <icosahedronGeometry args={[0.6, 1]} />
+      <meshPhysicalMaterial clearcoat={1} clearcoatRoughness={0.2} metalness={0.4} roughness={0.35} color={'#111317'} emissive={'#FF4DD8'} emissiveIntensity={0.9} />
+    </mesh>
   )
 }
 
-function CircuitOrbit() {
-  const ring = useRef()
-  useFrame((_, dt) => {
-    if (ring.current) ring.current.rotation.z += dt * 0.03 * Math.PI * 2
-  })
-  return (
-    <group scale={6.2}>
-      <mesh ref={ring}>
-        <torusGeometry args={[1.2, 0.02, 16, 256]} />
-        <meshStandardMaterial color={'#1A2230'} metalness={0.3} roughness={0.5} />
-      </mesh>
-      <mesh>
-        <ringGeometry args={[1.35, 1.37, 128]} />
-        <meshBasicMaterial color={'#B6FF4D'} transparent opacity={0.8} />
-      </mesh>
-    </group>
-  )
+function useFibonacciSphere(count = 280, radius = 2.2) {
+  return useMemo(() => {
+    const pts = []
+    const offset = 2 / count
+    const inc = Math.PI * (3 - Math.sqrt(5))
+    for (let i = 0; i < count; i++) {
+      const y = i * offset - 1 + offset / 2
+      const r = Math.sqrt(1 - y * y)
+      const phi = i * inc
+      pts.push(new THREE.Vector3(Math.cos(phi) * r * radius, y * radius, Math.sin(phi) * r * radius))
+    }
+    return pts
+  }, [count, radius])
 }
 
-function FloatingTiles() {
-  const tiles = useMemo(() => new Array(8).fill(0).map((_, i) => ({ key: i, angle: (i / 8) * Math.PI * 2, radius: 3.5, y: (i % 4) * 0.6 - 1.2 })), [])
+function NeuralWeb({ count = 220 }) {
   const group = useRef()
+  const nodes = useFibonacciSphere(count, 2.6)
+  const positions = useMemo(() => nodes.map((v) => v.toArray()), [nodes])
+
+  const edges = useMemo(() => {
+    const pairs = []
+    for (let i = 0; i < nodes.length; i++) {
+      const a = nodes[i]
+      let best = []
+      for (let j = 0; j < nodes.length; j++) if (i !== j) {
+        const d = a.distanceTo(nodes[j])
+        best.push([d, j])
+      }
+      best.sort((x, y) => x[0] - y[0])
+      for (let k = 0; k < 2; k++) pairs.push([i, best[k][1]])
+    }
+    const arr = new Float32Array(pairs.length * 2 * 3)
+    pairs.forEach((p, idx) => {
+      const v1 = nodes[p[0]], v2 = nodes[p[1]]
+      arr.set([v1.x, v1.y, v1.z, v2.x, v2.y, v2.z], idx * 6)
+    })
+    return arr
+  }, [nodes])
+
+  const lineGeom = useMemo(() => new THREE.BufferGeometry(), [])
+  const lineMat = useMemo(() => new THREE.LineBasicMaterial({ color: '#00E5FF', transparent: true, opacity: 0.28 }), [])
+  useMemo(() => {
+    lineGeom.setAttribute('position', new THREE.BufferAttribute(edges, 3))
+    return () => lineGeom.dispose()
+  }, [edges, lineGeom])
+
+  useFrame((state) => {
+    const t = state.clock.getElapsedTime()
+    if (group.current) group.current.rotation.y = t * 0.05
+    lineMat.opacity = 0.22 + (Math.sin(t * 1.2) + 1) * 0.12
+  })
+
+  return (
+    <group ref={group}>
+      <lineSegments geometry={lineGeom} material={lineMat} />
+      <Instances limit={positions.length} range={positions.length}>
+        <icosahedronGeometry args={[0.028, 0]} />
+        <meshBasicMaterial color={'#B6FF4D'} />
+        {positions.map((p, i) => (
+          <Instance key={i} position={p} />
+        ))}
+      </Instances>
+    </group>
+  )
+}
+
+function ParticleSwarm({ count = 480, radius = 3.6 }) {
+  const group = useRef()
+  const seeds = useMemo(() => new Array(count).fill(0).map((_, i) => ({
+    a: (i / count) * Math.PI * 2,
+    r: radius * (0.6 + Math.random() * 0.4),
+    h: (Math.random() - 0.5) * 1.4,
+    s: 0.2 + Math.random() * 0.6
+  })), [count, radius])
+
   useFrame((state) => {
     const t = state.clock.getElapsedTime()
     if (!group.current) return
-    group.current.children.forEach((tile, i) => {
-      const a = tiles[i].angle + t * 0.5 * 0.2
-      tile.position.set(Math.cos(a) * tiles[i].radius, tiles[i].y + Math.sin(t * 0.8 + i) * 0.2, Math.sin(a) * tiles[i].radius)
-      tile.rotation.y = a + Math.sin(t + i) * 0.2
-    })
+    let i = 0
+    for (const m of group.current.children) {
+      const d = seeds[i]
+      const a = d.a + t * d.s * 0.6
+      m.position.set(Math.cos(a) * d.r, d.h + Math.sin(t * 0.7 + i) * 0.15, Math.sin(a) * d.r)
+      m.rotation.y = a
+      i++
+    }
   })
+
   return (
     <group ref={group}>
-      {tiles.map((t) => (
-        <mesh key={t.key}>
-          <boxGeometry args={[0.7, 0.45, 0.02]} />
-          <meshPhysicalMaterial transmission={0.5} roughness={0.15} color={'#111317'} thickness={0.2} />
+      {seeds.map((d, i) => (
+        <mesh key={i}>
+          <sphereGeometry args={[0.02, 8, 8]} />
+          <meshBasicMaterial color={'#00E5FF'} opacity={0.6} transparent />
         </mesh>
       ))}
     </group>
   )
 }
 
-function HoloTrophy() {
-  const meshRef = useRef()
-  useFrame((state) => {
-    const t = state.clock.getElapsedTime()
-    if (!meshRef.current) return
-    meshRef.current.position.y = -0.3 + Math.sin(t * 0.8) * 0.15
+function DataHalo() {
+  const ring = useRef()
+  useFrame((_, dt) => {
+    if (ring.current) ring.current.rotation.z += dt * 0.2
   })
   return (
-    <group position={[0.9, -0.3, 0]} scale={0.9}>
-      <mesh ref={meshRef}>
-        <icosahedronGeometry args={[0.35, 0]} />
-        <meshBasicMaterial color={'#0F1116'} wireframe />
-      </mesh>
-      <pointLight color={'#FF6A3D'} intensity={1.2} distance={3} />
-    </group>
+    <mesh ref={ring} scale={4.6}>
+      <torusGeometry args={[1.2, 0.02, 16, 256]} />
+      <meshBasicMaterial color={'#00E5FF'} transparent opacity={0.45} />
+    </mesh>
   )
 }
 
@@ -139,10 +176,10 @@ export default function Hero({ content }) {
           {c.subhead || '48 hours. Real problems. Future‑ready products.'}
         </motion.p>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.24 }} className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <a href={(c.primary_cta && c.primary_cta.href) || '#register'} aria-label={(c.primary_cta && c.primary_cta.label) || 'Register for AI GENESIS'} className="inline-flex items-center justify-center rounded-md bg-[color:var(--cta-bg,#FF6A3D)] px-5 py-3 font-medium text-[color:var(--cta-fg,#0B0F14)] shadow-[0_8px_30px_rgba(255,106,61,0.35)] hover:bg-[color:var(--cta-hover,#FF835C)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[rgba(182,255,77,0.35)] ring-offset-[color:var(--bg-base,#0A0B0E)]">
+          <a href={(c.primary_cta && c.primary_cta.href) || '#register'} aria-label={(c.primary_cta && c.primary_cta.label) || 'Register for AI GENESIS'} className="inline-flex items-center justify-center rounded-md bg-[color:var(--cta-bg,#FF6A3D)] px-5 py-3 font-medium text-[color:var(--cta-fg,#0B0F14)] shadow-[0_8px_30px_rgba(0,229,255,0.35)] hover:brightness-[1.05] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[rgba(0,229,255,0.35)] ring-offset-[color:var(--bg-base,#0A0B0E)]">
             {(c.primary_cta && c.primary_cta.label) || 'Get started'}
           </a>
-          <a href={(c.secondary_cta && c.secondary_cta.href) || '#tracks'} aria-label={(c.secondary_cta && c.secondary_cta.label) || 'See available tracks'} className="inline-flex items-center justify-center rounded-md border border-[color:var(--border-soft,#1E2430)] bg-[color:var(--bg-panel,#111317)] px-5 py-3 font-medium text-[color:var(--text-primary,#F2F5F9)] hover:border-[color:var(--border-hard,#2A3242)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[rgba(182,255,77,0.35)] ring-offset-[color:var(--bg-base,#0A0B0E)]">
+          <a href={(c.secondary_cta && c.secondary_cta.href) || '#tracks'} aria-label={(c.secondary_cta && c.secondary_cta.label) || 'See available tracks'} className="inline-flex items-center justify-center rounded-md border border-[color:var(--border-soft,#1E2430)] bg-[color:var(--bg-panel,#111317)] px-5 py-3 font-medium text-[color:var(--text-primary,#F2F5F9)] hover:bg-[rgba(0,229,255,0.08)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[rgba(0,229,255,0.35)] ring-offset-[color:var(--bg-base,#0A0B0E)]">
             {(c.secondary_cta && c.secondary_cta.label) || 'See tracks'}
           </a>
         </motion.div>
@@ -159,15 +196,15 @@ export default function Hero({ content }) {
             <color attach="background" args={["#0A0B0E"]} />
             <ambientLight intensity={0.55} />
             <directionalLight intensity={1.15} position={[2.2, 3.1, 4.2]} color="#00E5FF" />
-            <directionalLight intensity={0.9} position={[-3.2, -2.1, 2.0]} color="#FF6A3D" />
+            <directionalLight intensity={0.9} position={[-3.2, -2.1, 2.0]} color="#FF4DD8" />
             <spotLight intensity={0.6} position={[0, 6, 6]} angle={0.7} penumbra={0.4} color="#B6FF4D" />
             <PointerGlow />
             <Suspense fallback={<Html center className="text-[color:var(--text-secondary,#C9D2E1)]">Loading…</Html>}>
               <Float rotationIntensity={0.02} floatIntensity={0.5}>
-                <NeuralRibbons />
-                <CircuitOrbit />
-                <FloatingTiles />
-                <HoloTrophy />
+                <NeonCore />
+                <NeuralWeb />
+                <ParticleSwarm />
+                <DataHalo />
               </Float>
               <Environment preset="city" />
             </Suspense>
