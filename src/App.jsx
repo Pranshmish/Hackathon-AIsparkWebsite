@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect, useState } from 'react'
 import Hero from './components/Hero.jsx'
+import { PrimaryButton } from './components/Buttons.jsx'
 import content from './content/site.json'
 
 const LogoStrip = lazy(() => import('./components/LogoStrip.jsx'))
@@ -56,9 +57,7 @@ function Header() {
           ))}
         </div>
         <div className="flex items-center gap-3">
-          <a href="#register" className="hidden rounded-md bg-[color:var(--cta-bg,#FF6A3D)] px-3 py-2 text-sm font-medium text-[color:var(--cta-fg,#0B0F14)] hover:bg-[color:var(--cta-hover,#FF835C)] sm:inline-flex" aria-label="Register">
-            Register
-          </a>
+          <PrimaryButton as="a" href="#register" className="hidden sm:inline-flex" aria-label="Register">Register</PrimaryButton>
           <button aria-pressed={reduced} aria-label="Toggle reduced motion" onClick={() => setReduced((v) => !v)} className="rounded-md border border-[color:var(--border-soft,#1E2430)] px-3 py-2 text-sm text-[color:var(--text-primary,#F2F5F9)]">
             {reduced ? 'Motion: Off' : 'Motion: On'}
           </button>
