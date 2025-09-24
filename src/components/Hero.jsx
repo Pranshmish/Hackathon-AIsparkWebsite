@@ -120,8 +120,9 @@ function HoloTrophy() {
   )
 }
 
-export default function Hero() {
+export default function Hero({ content }) {
   const reduceMotion = useReducedMotion()
+  const c = content || {}
   return (
     <section id="hero" className="relative overflow-hidden min-h-[92vh] flex items-center justify-center">
       <div aria-hidden className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,#1D0F0A,transparent_25%),radial-gradient(circle_at_50%_60%,#0F0C12,transparent_40%),#0A0B0E]" />
@@ -129,24 +130,24 @@ export default function Hero() {
 
       <div className="relative z-10 mx-auto max-w-6xl px-4 text-center">
         <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="text-sm tracking-wide text-[color:var(--text-secondary,#C9D2E1)]">
-          Official 2025
+          {c.eyebrow || 'Official 2025'}
         </motion.p>
-        <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }} className="mt-3 font-extrabold leading-tight text-[clamp(2.6rem,6vw,5.2rem)] tracking-[-0.015em] text-[color:var(--text-primary,#F2F5F9)]">
-          Build bold AI
+        <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }} className="mt-3 font-extrabold leading-tight text-[clamp(2.6rem,6vw,5.4rem)] tracking-[-0.015em] text-[color:var(--text-primary,#F2F5F9)]">
+          {c.headline || 'Build bold AI'}
         </motion.h1>
         <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.18 }} className="mx-auto mt-4 max-w-2xl text-[color:var(--text-muted,#94A3B8)]">
-          48 hours. Real problems. Future‑ready products.
+          {c.subhead || '48 hours. Real problems. Future‑ready products.'}
         </motion.p>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.24 }} className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <a href="#register" aria-label="Register for AI GENESIS" className="inline-flex items-center justify-center rounded-md bg-[color:var(--cta-bg,#FF6A3D)] px-5 py-3 font-medium text-[color:var(--cta-fg,#0B0F14)] shadow-[0_8px_30px_rgba(255,106,61,0.35)] hover:bg-[color:var(--cta-hover,#FF835C)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[rgba(182,255,77,0.35)] ring-offset-[color:var(--bg-base,#0A0B0E)]">
-            Get started
+          <a href={(c.primary_cta && c.primary_cta.href) || '#register'} aria-label={(c.primary_cta && c.primary_cta.label) || 'Register for AI GENESIS'} className="inline-flex items-center justify-center rounded-md bg-[color:var(--cta-bg,#FF6A3D)] px-5 py-3 font-medium text-[color:var(--cta-fg,#0B0F14)] shadow-[0_8px_30px_rgba(255,106,61,0.35)] hover:bg-[color:var(--cta-hover,#FF835C)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[rgba(182,255,77,0.35)] ring-offset-[color:var(--bg-base,#0A0B0E)]">
+            {(c.primary_cta && c.primary_cta.label) || 'Get started'}
           </a>
-          <a href="#tracks" aria-label="See available tracks" className="inline-flex items-center justify-center rounded-md border border-[color:var(--border-soft,#1E2430)] bg-[color:var(--bg-panel,#111317)] px-5 py-3 font-medium text-[color:var(--text-primary,#F2F5F9)] hover:border-[color:var(--border-hard,#2A3242)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[rgba(182,255,77,0.35)] ring-offset-[color:var(--bg-base,#0A0B0E)]">
-            See tracks
+          <a href={(c.secondary_cta && c.secondary_cta.href) || '#tracks'} aria-label={(c.secondary_cta && c.secondary_cta.label) || 'See available tracks'} className="inline-flex items-center justify-center rounded-md border border-[color:var(--border-soft,#1E2430)] bg-[color:var(--bg-panel,#111317)] px-5 py-3 font-medium text-[color:var(--text-primary,#F2F5F9)] hover:border-[color:var(--border-hard,#2A3242)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[rgba(182,255,77,0.35)] ring-offset-[color:var(--bg-base,#0A0B0E)]">
+            {(c.secondary_cta && c.secondary_cta.label) || 'See tracks'}
           </a>
         </motion.div>
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.35 }} className="mt-6 text-xs text-[color:var(--text-secondary,#C9D2E1)]">
-          Trusted by builders worldwide
+          {c.trust_badge || 'Trusted by builders worldwide'}
         </motion.p>
       </div>
 
@@ -154,11 +155,12 @@ export default function Hero() {
         <img src="/static_hero.svg" alt="Abstract AI themed background" className="absolute inset-0 h-full w-full object-cover opacity-50" />
       ) : (
         <div className="absolute inset-0" aria-hidden>
-          <Canvas camera={{ position: [0, 0, 8], fov: 38 }} dpr={[1, 2]}>
+          <Canvas camera={{ position: [0, 0, 8], fov: 36 }} dpr={[1, 2]}>
             <color attach="background" args={["#0A0B0E"]} />
             <ambientLight intensity={0.55} />
-            <directionalLight intensity={1.2} position={[2, 3, 4]} color="#00E5FF" />
-            <directionalLight intensity={0.85} position={[-3, -2, 2]} color="#FF6A3D" />
+            <directionalLight intensity={1.15} position={[2.2, 3.1, 4.2]} color="#00E5FF" />
+            <directionalLight intensity={0.9} position={[-3.2, -2.1, 2.0]} color="#FF6A3D" />
+            <spotLight intensity={0.6} position={[0, 6, 6]} angle={0.7} penumbra={0.4} color="#B6FF4D" />
             <PointerGlow />
             <Suspense fallback={<Html center className="text-[color:var(--text-secondary,#C9D2E1)]">Loading…</Html>}>
               <Float rotationIntensity={0.02} floatIntensity={0.5}>
