@@ -1,4 +1,25 @@
-import { LightningBoltIcon, HandIcon, ShieldCheckIcon } from '@radix-ui/react-icons'
+function LightningBoltIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden width="24" height="24" {...props}>
+      <path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z" fill="currentColor" />
+    </svg>
+  )
+}
+function HandIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden width="24" height="24" {...props}>
+      <path d="M12 2v10l4 4v2H6v-6l6-10z" fill="currentColor" />
+    </svg>
+  )
+}
+function ShieldCheckIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden width="24" height="24" {...props}>
+      <path d="M12 2l7 4v5c0 5-3.9 9.7-7 11-3.1-1.3-7-6-7-11V6l7-4z" fill="currentColor" />
+      <path d="M9.5 12.5l1.8 1.8 3.7-3.7" stroke="#0B0F14" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
 
 const items = [
   { icon: LightningBoltIcon, title: 'Cinematic 3D', body: 'AI‑themed ribbons, circuits, holograms for instant wow.' },
