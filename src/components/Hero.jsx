@@ -3,7 +3,6 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { Html, Float, Environment } from '@react-three/drei'
 import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing'
 import { motion, useReducedMotion } from 'framer-motion'
-import { MotionCanvas } from 'framer-motion-3d'
 import * as THREE from 'three'
 
 function ParallaxCameraTilt({ maxX = 0.12, maxY = 0.12 }) {
@@ -153,7 +152,7 @@ export default function Hero() {
       </div>
 
       {reduceMotion ? (
-        <img src="/static_hero.png" alt="Abstract AI themed background" className="absolute inset-0 h-full w-full object-cover opacity-50" />
+        <img src="/static_hero.svg" alt="Abstract AI themed background" className="absolute inset-0 h-full w-full object-cover opacity-50" />
       ) : (
         <div className="absolute inset-0" aria-hidden>
           <Canvas camera={{ position: [0, 0, 8], fov: 38 }} dpr={[1, 2]}>
