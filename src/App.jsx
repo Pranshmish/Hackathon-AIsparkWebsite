@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect, useState } from 'react'
 import Hero from './components/Hero.jsx'
+import content from './content/site.json'
 
 const LogoStrip = lazy(() => import('./components/LogoStrip.jsx'))
 const Features = lazy(() => import('./components/Features.jsx'))
@@ -72,27 +73,27 @@ export default function App() {
     <div className="bg-[color:var(--bg-base,#0A0B0E)] text-[color:var(--text-primary,#F2F5F9)]">
       <Header />
       <main>
-        <Hero />
+        <Hero content={content.hero} />
         <Suspense fallback={null}>
-          <LogoStrip />
+          <LogoStrip title="Backed by leaders" logos={content.logos} />
         </Suspense>
         <Suspense fallback={null}>
-          <Features />
+          <Features title={content.features.title} items={content.features.items} />
         </Suspense>
         <Suspense fallback={null}>
-          <Tracks />
+          <Tracks title={content.tracks.title} subhead={content.tracks.subhead} cards={content.tracks.cards} />
         </Suspense>
         <Suspense fallback={null}>
-          <Prizes />
+          <Prizes title={content.prizes.title} items={content.prizes.items} total={content.prizes.total} cta={content.prizes.cta} />
         </Suspense>
         <Suspense fallback={null}>
-          <Timeline />
+          <Timeline title={content.timeline.title} items={content.timeline.items} />
         </Suspense>
         <Suspense fallback={null}>
-          <FAQ />
+          <FAQ title={content.faq.title} items={content.faq.items} />
         </Suspense>
         <Suspense fallback={null}>
-          <CTABand />
+          <CTABand headline={content.final_cta.headline} subhead={content.final_cta.subhead} cta_primary={content.final_cta.cta_primary} cta_secondary={content.final_cta.cta_secondary} />
         </Suspense>
       </main>
       <footer className="border-t border-[color:var(--border-soft,#1E2430)] bg-[color:var(--bg-panel,#111317)]">
