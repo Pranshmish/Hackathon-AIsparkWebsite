@@ -1,7 +1,6 @@
 import { Suspense, useMemo, useRef } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { Html, Float, Environment } from '@react-three/drei'
-import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing'
 import { motion, useReducedMotion } from 'framer-motion'
 import * as THREE from 'three'
 
@@ -169,10 +168,6 @@ export default function Hero() {
                 <HoloTrophy />
               </Float>
               <Environment preset="city" />
-              <EffectComposer>
-                <Bloom intensity={0.7} luminanceThreshold={0.86} luminanceSmoothing={0.7} />
-                <Vignette eskil={false} offset={0.1} darkness={0.32} />
-              </EffectComposer>
             </Suspense>
             <ParallaxCameraTilt />
           </Canvas>
