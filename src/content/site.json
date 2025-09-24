@@ -1,0 +1,75 @@
+{
+  "seo": {
+    "title": "AI GENESIS — Build bold AI",
+    "description": "Cinematic AI-themed 3D, premium components, and high-contrast dark UI for a conversion-first hackathon landing.",
+    "og_image": "/og/aigenesis_v2.png"
+  },
+  "header": {
+    "logo_text": "AI GENESIS",
+    "nav": ["Why us", "Tracks", "Prizes", "Schedule", "FAQ"],
+    "cta_primary": { "label": "Register", "href": "#register" },
+    "cta_secondary": { "label": "Join Discord", "href": "#community" }
+  },
+  "hero": {
+    "eyebrow": "Official 2025",
+    "headline": "Design that speaks volumes",
+    "subhead": "A dark, cinematic AI hackathon landing with real-time 3D and crisp micro‑interactions.",
+    "primary_cta": { "label": "Get started", "href": "#register" },
+    "secondary_cta": { "label": "See tracks", "href": "#tracks" },
+    "trust_badge": "Trusted by builders worldwide"
+  },
+  "logos": ["/logos/a.svg", "/logos/b.svg", "/logos/c.svg", "/logos/d.svg"],
+  "features": {
+    "title": "Why join",
+    "items": [
+      { "icon": "zap", "title": "Cinematic 3D", "body": "Neural ribbons, circuit orbits, programmable badges, and holograms." },
+      { "icon": "sparkles", "title": "Premium UI", "body": "Shadcn + Radix components with Motion micro‑interactions." },
+      { "icon": "gauge", "title": "Fast & accessible", "body": "Optimized assets, AA contrast, reduced‑motion support." }
+    ]
+  },
+  "tracks": {
+    "title": "Tracks",
+    "subhead": "Agents · Vision · Infra · Consumer",
+    "cards": [
+      { "title": "Agents", "body": "Autonomous workflows that deliver outcomes." },
+      { "title": "Vision", "body": "Perception for industry and accessibility." },
+      { "title": "Infra", "body": "Tooling for evals, safety, ops." },
+      { "title": "Consumer", "body": "Delightful products people love." }
+    ]
+  },
+  "prizes": {
+    "title": "Prizes",
+    "items": [
+      { "name": "Grand Prize", "value": 1000000 },
+      { "name": "Runner‑up", "value": 500000 },
+      { "name": "Third Place", "value": 300000 },
+      { "name": "Special Awards", "value": 200000 }
+    ],
+    "total": 2000000,
+    "cta": { "label": "Register now", "href": "#register" }
+  },
+  "timeline": {
+    "title": "Key dates",
+    "items": [
+      { "label": "Reg opens", "date": "2025-09-25" },
+      { "label": "Workshops", "date": "2025-10-05" },
+      { "label": "Hack days", "date": "2025-10-12" },
+      { "label": "Demo day", "date": "2025-10-14" },
+      { "label": "Winners", "date": "2025-10-15" }
+    ]
+  },
+  "faq": {
+    "title": "FAQs",
+    "items": [
+      { "q": "Who can participate?", "a": "Open to all over 16; teams up to 4." },
+      { "q": "Submission format?", "a": "GitHub repo + 2‑min video + README." },
+      { "q": "Judging?", "a": "Impact, originality, technical depth, polish." }
+    ]
+  },
+  "final_cta": {
+    "headline": "Join 1,000+ builders",
+    "subhead": "Kickoff Oct 12, 2025 (IST)",
+    "cta_primary": { "label": "Register", "href": "#register" },
+    "cta_secondary": { "label": "Join Discord", "href": "#community" }
+  }
+}
