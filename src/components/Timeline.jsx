@@ -1,16 +1,8 @@
-const items = [
-  { label: 'Reg opens', date: '2025-09-25' },
-  { label: 'Workshops', date: '2025-10-05' },
-  { label: 'Hack days', date: '2025-10-12' },
-  { label: 'Demo day', date: '2025-10-14' },
-  { label: 'Winners', date: '2025-10-15' },
-]
-
-export default function Timeline() {
+export default function Timeline({ title = 'Key dates', items = [] }) {
   return (
     <section id="schedule" className="border-t border-[color:var(--border-soft,#1E2430)] bg-[color:var(--bg-base,#0A0B0E)]">
       <div className="mx-auto max-w-6xl px-4 py-16">
-        <h2 className="text-center text-3xl font-bold text-[color:var(--text-primary,#F2F5F9)]">Key dates</h2>
+        <h2 className="text-center text-3xl font-bold text-[color:var(--text-primary,#F2F5F9)]">{title}</h2>
         <ol className="mx-auto mt-8 max-w-2xl">
           {items.map((it, i) => (
             <li key={it.label} className="flex items-center gap-4 py-3">
