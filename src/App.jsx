@@ -59,6 +59,7 @@ function NavLink({ href, children, className = "" }) {
 // Enhanced Header component (Updated nav to Coming Soon sections)
 function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50)
@@ -69,38 +70,82 @@ function Header() {
   const links = [
     { label: 'About', href: '#about' },
     { label: 'Sponsor Us', href: '#sponsor-us' },
-    // Keeping original anchors commented for later use (do not remove)
-    // { label: 'Tracks', href: '#tracks' },
-    // { label: 'Prizes', href: '#prizes' },
-    // { label: 'Schedule', href: '#schedule' },
-    // { label: 'FAQ', href: '#faq' },
   ]
 
   return (
-    <header className={`sticky top-0 z-50 transition-all duration-300 ${isScrolled
-      ? 'backdrop-blur-xl bg-gray-950/90 border-b border-red-900/20 shadow-xl shadow-red-900/10'
-      : 'backdrop-blur-sm bg-black/25'
-      }`}>
+    <header
+      className={`sticky top-0 z-50 transition-all duration-300 ${isScrolled
+          ? 'backdrop-blur-xl bg-gray-950/90 border-b border-red-900/20 shadow-xl shadow-red-900/10'
+          : 'backdrop-blur-sm bg-black/25'
+        }`}
+    >
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-        <a href="#hero" className="relative font-black text-xl tracking-tight text-gray-100 hover:text-red-200 transition-all duration-300 transform hover:scale-105 group" aria-label="AI GENESIS Home">
+        {/* Logo */}
+        <a
+          href="#hero"
+          className="relative font-black text-xl tracking-tight text-gray-100 hover:text-red-200 transition-all duration-300 transform hover:scale-105 group"
+          aria-label="AI GENESIS Home"
+        >
           <span className="relative z-10">AI GENESIS</span>
           <div className="absolute inset-0 bg-red-500/10 blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg transform scale-110" />
           <div className="absolute -top-1 -right-2 w-2 h-2 bg-red-500/60 rounded-full animate-pulse group-hover:bg-red-400 group-hover:scale-125 transition-all duration-300" />
         </a>
 
+        {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
-          {links.map(l => (
-            <NavLink key={l.label} href={l.href}>{l.label}</NavLink>
+          {links.map((l) => (
+            <NavLink key={l.label} href={l.href}>
+              {l.label}
+            </NavLink>
           ))}
         </div>
+
+        {/* Mobile Hamburger */}
+        <button
+          className="md:hidden flex items-center text-gray-300 hover:text-red-400 focus:outline-none"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          {menuOpen ? (
+            // X icon
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          ) : (
+            // Hamburger icon
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          )}
+        </button>
       </nav>
-      <div className={`absolute bottom-0 left-1/2 transform -translate-x-1/2 h-px transition-all duration-500 ${isScrolled
-        ? 'w-full bg-gradient-to-r from-transparent via-red-500/40 to-transparent'
-        : 'w-0 bg-transparent'
-        }`} />
+
+      {/* Mobile Dropdown */}
+      {menuOpen && (
+        <div className="md:hidden bg-gray-950/95 border-t border-red-900/30 px-4 py-4 space-y-4">
+          {links.map((l) => (
+            <NavLink
+              key={l.label}
+              href={l.href}
+              className="block text-lg"
+              onClick={() => setMenuOpen(false)} // auto-close on click
+            >
+              {l.label}
+            </NavLink>
+          ))}
+        </div>
+      )}
+
+      {/* Bottom glowing line */}
+      <div
+        className={`absolute bottom-0 left-1/2 transform -translate-x-1/2 h-px transition-all duration-500 ${isScrolled
+            ? 'w-full bg-gradient-to-r from-transparent via-red-500/40 to-transparent'
+            : 'w-0 bg-transparent'
+          }`}
+      />
     </header>
   )
 }
+
 
 // Enhanced footer with hover effects
 function Footer() {
@@ -180,7 +225,7 @@ export default function App() {
 
   const sections = [
     // Sponsor Us (LogoStrip) – repurposed title and optional CTA via props
-    { Component: lazySections.LogoStrip, props: { title: 'Sponsor US', logos, cta: { label: 'Become a sponsor', href: 'mailto:team@aigenesis.dev' } } },
+    { Component: lazySections.LogoStrip, props: { title: 'Sponsor Us', logos, cta: { label: 'Become a sponsor', href: 'mailto:team@aigenesis.dev' } } },
 
     // About Us – new component file (render first after hero)
     { Component: AboutUs, props: { id: 'about', title: 'About Us' } },
