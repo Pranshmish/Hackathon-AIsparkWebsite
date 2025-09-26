@@ -1,40 +1,40 @@
 {
   "seo": {
-    "title": "AI GENESIS — The Future Starts Here",
-    "description": "Join the ultimate AI hackathon where visionaries, coders, and creators come together to build groundbreaking AI solutions. Compete, learn, and shape the future.",
+    "title": "AI GENESIS — Coming Soon",
+    "description": "AI GENESIS is a new platform for next‑generation AI products and research. Sign up to get early access and updates as we unveil what’s next.",
     "og_image": "/og/aigenesis.png"
   },
   "header": {
     "logo_text": "AI GENESIS",
     "nav": [
       "About",
-      "Tracks",
-      "Prizes",
-      "Schedule",
+      "Vision",
+      "Updates",
+      "Roadmap",
       "FAQ"
     ],
     "cta_primary": {
-      "label": "Register",
-      "href": "#register"
+      "label": "Notify Me",
+      "href": "#notify"
     },
     "cta_secondary": {
-      "label": "Join Discord",
+      "label": "Join Community",
       "href": "#community"
     }
   },
   "hero": {
-    "eyebrow": "Official Hackathon 2025",
-    "headline": "Build Bold AI at AI GENESIS",
-    "subhead": "A global hackathon bringing together developers, designers, and innovators to push the boundaries of artificial intelligence.",
+    "eyebrow": "AI GENESIS",
+    "headline": "The Future Starts Soon",
+    "subhead": "A new home for agents, vision, infrastructure, and consumer AI—crafted for builders, teams, and enterprises. Early access opens soon.",
     "primary_cta": {
-      "label": "Register Now",
-      "href": "#register"
+      "label": "Get Early Access",
+      "href": "#notify"
     },
     "secondary_cta": {
-      "label": "Explore Tracks",
-      "href": "#tracks"
+      "label": "Follow Updates",
+      "href": "#updates"
     },
-    "trust_badge": "Trusted by 1,000+ innovators worldwide"
+    "trust_badge": "Join the waitlist for early access"
   },
   "logos": [
     "/logos/a.svg",
@@ -43,124 +43,124 @@
     "/logos/d.svg"
   ],
   "features": {
-    "title": "Why AI GENESIS?",
+    "title": "What to Expect",
     "items": [
       {
         "icon": "zap",
-        "title": "Cutting-Edge AI",
-        "body": "Dive into the latest in AI agents, vision models, infra tools, and consumer apps."
+        "title": "Agentic Systems",
+        "body": "Production‑grade agents with tools, memory, and guardrails for real‑world workflows."
       },
       {
         "icon": "sparkles",
-        "title": "Community & Mentorship",
-        "body": "Learn from top mentors, collaborate with peers, and grow your skills."
+        "title": "Human‑Centered Design",
+        "body": "Thoughtful UX, accessibility, and collaboration features built in from day one."
       },
       {
         "icon": "gauge",
-        "title": "Global Impact",
-        "body": "Build solutions that don’t just impress judges but also make a difference."
+        "title": "Scalable Infra",
+        "body": "Safety, evaluation, and operations tooling that grows with teams and enterprises."
       }
     ]
   },
   "tracks": {
-    "title": "Hackathon Tracks",
-    "subhead": "Choose your battlefield",
+    "title": "Product Pillars",
+    "subhead": "Shaping what launches first",
     "cards": [
       {
         "title": "Agents",
-        "body": "Design autonomous AI workflows to solve real-world problems."
+        "body": "Autonomous and semi‑autonomous workflows with tools, memory, and review."
       },
       {
         "title": "Vision",
-        "body": "Revolutionize accessibility, healthcare, and industry with computer vision."
+        "body": "Perception systems powering accessibility, quality, and safety at scale."
       },
       {
         "title": "Infra",
-        "body": "Develop scalable tools for safety, evaluation, and AI infrastructure."
+        "body": "Evaluation, safety, and MLOps primitives for reliable AI."
       },
       {
         "title": "Consumer",
-        "body": "Build AI-powered products people love to use every day."
+        "body": "Delightful everyday AI products people trust and love."
       }
     ]
   },
   "prizes": {
-    "title": "Prizes & Recognition",
+    "title": "Launch Timeline",
     "items": [
       {
-        "name": "Grand Prize",
-        "value": 1000000
+        "name": "Alpha Access",
+        "value": "Private"
       },
       {
-        "name": "Runner-up",
-        "value": 500000
+        "name": "Beta Access",
+        "value": "Invite‑only"
       },
       {
-        "name": "Third Place",
-        "value": 300000
+        "name": "Public Preview",
+        "value": "Rolling"
       },
       {
-        "name": "Special Awards",
-        "value": 200000
+        "name": "General Release",
+        "value": "Coming Soon"
       }
     ],
-    "total": 2000000,
+    "total": "Join the waitlist",
     "cta": {
-      "label": "Register Today",
-      "href": "#register"
+      "label": "Request Access",
+      "href": "#notify"
     }
   },
   "timeline": {
-    "title": "Hackathon Schedule",
+    "title": "Roadmap",
     "items": [
       {
-        "label": "Registrations Open",
-        "date": "2025-09-25"
+        "label": "Waitlist Opens",
+        "date": "2025-09-26"
       },
       {
-        "label": "Workshops Begin",
-        "date": "2025-10-05"
+        "label": "Alpha Invites",
+        "date": "TBA"
       },
       {
-        "label": "Hackathon Days",
-        "date": "2025-10-12"
+        "label": "Beta Rollout",
+        "date": "TBA"
       },
       {
-        "label": "Demo Day",
-        "date": "2025-10-14"
+        "label": "Preview Launch",
+        "date": "TBA"
       },
       {
-        "label": "Winner Announcement",
-        "date": "2025-10-15"
+        "label": "General Availability",
+        "date": "TBA"
       }
     ]
   },
   "faq": {
-    "title": "Frequently Asked Questions",
+    "title": "Coming Soon — FAQs",
     "items": [
       {
-        "q": "Who can participate?",
-        "a": "AI GENESIS is open to anyone 16+ worldwide. Teams can have up to 4 members."
+        "q": "What is AI GENESIS?",
+        "a": "AI GENESIS is an upcoming platform focused on agentic systems, computer vision, scalable infrastructure, and consumer AI experiences."
       },
       {
-        "q": "What do I submit?",
-        "a": "A GitHub repository with your code, a README, and a 2-minute demo video."
+        "q": "How can I get early access?",
+        "a": "Join the waitlist using the Notify Me button. Early cohorts will get alpha and beta invites as we roll out."
       },
       {
-        "q": "How are projects judged?",
-        "a": "By impact, originality, technical execution, and user experience."
+        "q": "Who is this for?",
+        "a": "Builders, teams, and enterprises who want practical, reliable AI with a strong focus on safety, evaluation, and UX."
       }
     ]
   },
   "final_cta": {
-    "headline": "Be Part of the AI Revolution",
-    "subhead": "Hackathon kicks off October 12, 2025 (IST)",
+    "headline": "AI GENESIS — Coming Soon",
+    "subhead": "Be first to know when access opens",
     "cta_primary": {
-      "label": "Register Now",
-      "href": "#register"
+      "label": "Join the Waitlist",
+      "href": "#notify"
     },
     "cta_secondary": {
-      "label": "Join Our Discord",
+      "label": "Join Our Community",
       "href": "#community"
     }
   }
