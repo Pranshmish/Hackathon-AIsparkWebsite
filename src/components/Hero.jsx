@@ -1,145 +1,13 @@
 import { Suspense, useMemo, useRef, useState, useEffect } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { Html, Float, Environment, Instances, Instance } from '@react-three/drei'
+import { Html, Float, Environment, Instances, Instance, AdaptiveDpr, PerformanceMonitor, Preload } from '@react-three/drei'
 import { motion, useReducedMotion, AnimatePresence } from 'framer-motion'
 import * as THREE from 'three'
 import { PrimaryButton, SecondaryButton } from './Buttons.jsx'
 
 /* =========================
-   Blood-dripping 3D Ball
-   ========================= */
-function BloodDripping3D() {
-  const dripsGroup = useRef(null)
-  const ballRef = useRef(null)
-
-  const bloodDrops = useMemo(() => {
-    const drops = []
-    // Environmental drips
-    for (let i = 0; i < 10; i++) {
-      drops.push({
-        type: 'environmental',
-        position: new THREE.Vector3(
-          (Math.random() - 0.5) * 8,
-          4 + Math.random() * 2,
-          (Math.random() - 0.5) * 6
-        ),
-        speed: 0.3 + Math.random() * 0.4,
-        size: 0.03 + Math.random() * 0.03,
-        delay: i * 0.25
-      })
-    }
-    // Drops around ball surface
-    for (let i = 0; i < 10; i++) {
-      const angle = (i / 10) * Math.PI * 2
-      drops.push({
-        type: 'ball',
-        position: new THREE.Vector3(
-          Math.cos(angle) * 0.6,
-          0.3 + Math.random() * 0.2,
-          Math.sin(angle) * 0.6
-        ),
-        speed: 0.25 + Math.random() * 0.25,
-        size: 0.022 + Math.random() * 0.018,
-        delay: i * 0.18,
-        angle
-      })
-    }
-    return drops
-  }, [])
-
-  useFrame((state) => {
-    const time = state.clock.getElapsedTime()
-
-    // Ball motion
-    const ball = ballRef.current
-    if (ball) {
-      ball.rotation.y = time * 0.6
-      ball.rotation.x = Math.sin(time * 0.4) * 0.12
-      ball.position.y = Math.sin(time * 1.0) * 0.06
-    }
-
-    // Drips motion
-    const group = dripsGroup.current
-    if (!group) return
-    const children = group.children
-    if (!children || children.length === 0) return
-
-    // Match children count to data length
-    const n = Math.min(children.length, bloodDrops.length)
-    for (let i = 0; i < n; i++) {
-      const dropMesh = children[i]
-      if (!dropMesh || !dropMesh.position || !dropMesh.scale) continue
-      const d = bloodDrops[i]
-      const t = time + d.delay
-
-      if (d.type === 'environmental') {
-        dropMesh.position.y = d.position.y - (t * d.speed) % 8
-        dropMesh.position.x = d.position.x + Math.sin(t * 0.45) * 0.12
-        const pulse = 1 + Math.sin(t * 2.6) * 0.22
-        dropMesh.scale.setScalar(d.size * pulse)
-        const alpha = Math.max(0.25, 1 - Math.abs(dropMesh.position.y) / 6)
-        if (dropMesh.material) dropMesh.material.opacity = alpha * 0.85
-      } else {
-        const ballRadius = 0.6
-        const surfaceTime = t % 5.5
-        const heightOffset = Math.sin(t * 0.9) * 0.08
-        if (surfaceTime < 1.6) {
-          dropMesh.position.x = Math.cos(d.angle + t * 0.14) * ballRadius
-          dropMesh.position.z = Math.sin(d.angle + t * 0.14) * ballRadius
-          dropMesh.position.y = 0.08 + heightOffset
-        } else {
-          dropMesh.position.x = Math.cos(d.angle) * ballRadius
-          dropMesh.position.z = Math.sin(d.angle) * ballRadius
-          dropMesh.position.y = 0.08 + heightOffset - (surfaceTime - 1.6) * d.speed
-        }
-        const pulse = 1 + Math.sin(t * 3.6) * 0.18
-        dropMesh.scale.setScalar(d.size * pulse)
-        if (dropMesh.material) dropMesh.material.opacity = 0.95
-      }
-    }
-  })
-
-  return (
-    <Float position={[2.5, -0.5, 1]} rotationIntensity={0.08} floatIntensity={0.6} speed={1.1}>
-      <group renderOrder={10}>
-        {/* Main ball */}
-        <mesh ref={ballRef} position={[0, 0, 0]}>
-          <sphereGeometry args={[0.6, 64, 64]} />
-          <meshStandardMaterial
-            color="#B80E0E"
-            metalness={0.25}
-            roughness={0.45}
-            emissive="#520000"
-            emissiveIntensity={0.55}
-          />
-        </mesh>
-
-        {/* Local light so ball remains visible */}
-        <pointLight position={[0.7, 0.6, 1.2]} intensity={1.0} color={'#B01515'} distance={6} />
-
-        {/* Drops */}
-        <group ref={dripsGroup}>
-          {bloodDrops.map((d, i) => (
-            <mesh key={i} position={d.position.clone()}>
-              <sphereGeometry args={[1, 10, 14]} />
-              <meshStandardMaterial
-                color={d.type === 'ball' ? '#C21E1E' : '#8B0000'}
-                transparent
-                opacity={d.type === 'ball' ? 0.95 : 0.85}
-                roughness={0.9}
-                metalness={0.05}
-              />
-            </mesh>
-          ))}
-        </group>
-      </group>
-    </Float>
-  )
-}
-
-/* =========================
-   Loading + Transitions
-   ========================= */
+  Loading + Transitions
+  ========================= */
 function BloodVeinLoading({ progress }) {
   const [veins] = useMemo(() => {
     const veinPaths = []
@@ -185,6 +53,7 @@ function BloodVeinLoading({ progress }) {
               opacity="0.6"
             />
             <motion.path
+              key={vein.id}
               d={`M ${vein.path.map(p => `${p.x} ${p.y}`).join(' L ')}`}
               stroke="url(#flowGradient)"
               strokeWidth="1.2"
@@ -201,8 +70,8 @@ function BloodVeinLoading({ progress }) {
             key={i}
             cx={x}
             cy="60"
-            r="2"
             fill="#DC143C"
+            initial={{ r: 1.5, opacity: 0.6 }}
             animate={{ r: [1.5, 3, 1.5], opacity: [0.6, 1, 0.6] }}
             transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.5, ease: "easeInOut" }}
           />
@@ -221,28 +90,58 @@ function BloodVeinLoading({ progress }) {
 function StartupAnimations({ onComplete }) {
   const [phase, setPhase] = useState('blood-loading')
   const [loadingProgress, setLoadingProgress] = useState(0)
+  const animationRef = useRef()
+  const startTimeRef = useRef()
+  const duration = 2000 // 2 seconds total loading time
 
   useEffect(() => {
-    const progressTimer = setInterval(() => {
-      setLoadingProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(progressTimer)
-          setTimeout(() => setPhase('blood-explosion'), 500)
-          return 100
-        }
-        return prev + Math.random() * 8 + 4
-      })
-    }, 180)
+    startTimeRef.current = Date.now()
+    let completed = false
 
-    const fallbackTimer = setTimeout(() => setPhase('complete'), 7000)
+    const animate = () => {
+      if (completed) return
+
+      const elapsed = Date.now() - startTimeRef.current
+      const progress = Math.min(100, (elapsed / duration) * 100)
+      setLoadingProgress(Math.floor(progress))
+
+      if (progress >= 100) {
+        setLoadingProgress(100)
+        completed = true
+        animationRef.current = null
+        // Hold at 100% for 800ms before completing
+        setTimeout(() => {
+          setPhase('complete')
+        }, 800)
+        return
+      }
+
+      animationRef.current = requestAnimationFrame(animate)
+    }
+
+    animationRef.current = requestAnimationFrame(animate)
+
+    const fallbackTimer = setTimeout(() => {
+      if (!completed) {
+        setLoadingProgress(100)
+        setPhase('complete')
+      }
+    }, duration + 1000)
+
     return () => {
-      clearInterval(progressTimer)
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current)
+      }
       clearTimeout(fallbackTimer)
     }
   }, [])
 
   useEffect(() => {
-    if (phase === 'complete' && onComplete) onComplete()
+    if (phase === 'complete') {
+      setTimeout(() => {
+        if (onComplete) onComplete()
+      }, 1200)
+    }
   }, [phase, onComplete])
 
   return (
@@ -251,21 +150,13 @@ function StartupAnimations({ onComplete }) {
         <BloodVeinLoadingScreen
           key="blood-loading"
           progress={loadingProgress}
-          onComplete={() => setPhase('blood-explosion')}
         />
-      )}
-      {phase === 'blood-explosion' && (
-        <BloodExplosion key="blood-explosion" onComplete={() => setPhase('complete')} />
       )}
     </AnimatePresence>
   )
 }
 
-function BloodVeinLoadingScreen({ progress, onComplete }) {
-  useEffect(() => {
-    if (progress >= 100) setTimeout(onComplete, 1200)
-  }, [progress, onComplete])
-
+function BloodVeinLoadingScreen({ progress }) {
   return (
     <motion.div
       className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black overflow-hidden"
@@ -293,49 +184,9 @@ function BloodVeinLoadingScreen({ progress, onComplete }) {
   )
 }
 
-function BloodExplosion({ onComplete }) {
-  const [bloodParticles] = useState(() =>
-    Array.from({ length: 80 }, (_, i) => ({
-      id: i,
-      startX: 50,
-      startY: 50,
-      targetX: Math.random() * 100,
-      targetY: Math.random() * 100,
-      delay: i * 0.008,
-      size: Math.random() * 10 + 6,
-      rotation: Math.random() * 360,
-      intensity: Math.random() * 0.8 + 0.4
-    }))
-  )
-
-  useEffect(() => {
-    const timer = setTimeout(onComplete, 2500)
-    return () => clearTimeout(timer)
-  }, [onComplete])
-
-  return (
-    <motion.div className="fixed inset-0 z-40 bg-black pointer-events-none overflow-hidden" exit={{ opacity: 0 }} transition={{ duration: 1.5 }}>
-      {bloodParticles.map(particle => (
-        <motion.div
-          key={particle.id}
-          className="absolute rounded-full blur-sm"
-          style={{
-            width: `${particle.size}px`,
-            height: `${particle.size}px`,
-            background: `radial-gradient(circle, rgba(220,38,38,${particle.intensity}) 0%, rgba(139,0,0,${particle.intensity * 0.7}) 70%, transparent 100%)`
-          }}
-          initial={{ left: `${particle.startX}%`, top: `${particle.startY}%`, scale: 1, rotate: particle.rotation }}
-          animate={{ left: `${particle.targetX}%`, top: `${particle.targetY}%`, scale: [1, 1.3, 0], rotate: particle.rotation + 270 }}
-          transition={{ duration: 2, delay: particle.delay, ease: "easeOut" }}
-        />
-      ))}
-    </motion.div>
-  )
-}
-
 /* =========================
-   3D Scene Essentials
-   ========================= */
+  3D Scene Essentials
+  ========================= */
 function ParallaxCameraTilt({ maxX = 0.12, maxY = 0.12 }) {
   const { camera } = useThree()
   const pointer = useThree((s) => s.pointer)
@@ -655,27 +506,32 @@ function BloodDrips() {
 }
 
 /* =========================
-   Hero section
-   ========================= */
-export default function Hero({ content }) {
+  Hero section
+  ========================= */
+export default function Hero({ content, onStartupComplete, startupDone }) {
   const reduceMotion = useReducedMotion()
-  const [showStartup, setShowStartup] = useState(true)
+  const [showStartup, setShowStartup] = useState(() => (reduceMotion ? false : !startupDone))
 
   useEffect(() => {
-    if (reduceMotion) {
-      setShowStartup(false)
-    }
+    if (reduceMotion) setShowStartup(false)
   }, [reduceMotion])
 
+  useEffect(() => {
+    if (startupDone) setShowStartup(false)
+  }, [startupDone])
+
   if (showStartup && !reduceMotion) {
-    return <StartupAnimations onComplete={() => setShowStartup(false)} />
+    return <StartupAnimations onComplete={() => {
+      setShowStartup(false)
+      if (onStartupComplete) onStartupComplete()
+    }} />
   }
 
   return (
     <section id="hero" className="relative overflow-hidden min-h-[85vh] flex items-center justify-center">
       {/* Background */}
-      <div aria-hidden className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,#2A0000,transparent_22%),radial-gradient(circle_at_70%_60%,#0E0000,transparent_36%),radial-gradient(circle_at_50%_50%,#140000,transparent_56%),#050000]" />
-      <div aria-hidden className="pointer-events-none absolute inset-0 grain-overlay opacity-35" />
+      <div aria-hidden={true} className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,#2A0000,transparent_22%),radial-gradient(circle_at_70%_60%,#0E0000,transparent_36%),radial-gradient(circle_at_50%_50%,#140000,transparent_56%),#050000]" />
+      <div aria-hidden={true} className="pointer-events-none absolute inset-0 grain-overlay opacity-15" />
 
       {/* Content */}
       <EnhancedContentAnimations content={content} />
@@ -684,17 +540,17 @@ export default function Hero({ content }) {
       {reduceMotion ? (
         <img src="/static_hero.svg" alt="Abstract AI themed background" className="absolute inset-0 h-full w-full object-cover opacity-50" />
       ) : (
-        <div className="absolute inset-0" aria-hidden>
-          <Canvas camera={{ position: [0, 0, 8.0], fov: 32 }} dpr={[1, 2]}>
+        <motion.div className="absolute inset-0" aria-hidden={true} initial={{ opacity: 0, scale: 0.99 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, ease: "easeOut" }}>
+          <Canvas camera={{ position: [0, 0, 8.0], fov: 32 }} dpr={[1.25, 3]} gl={{ antialias: true, powerPreference: 'high-performance' }} onCreated={({ gl }) => { gl.toneMapping = THREE.ACESFilmicToneMapping; gl.outputColorSpace = THREE.SRGBColorSpace; }}>
             <color attach="background" args={["#050000"]} />
-            <ambientLight intensity={0.28} color="#1A0000" />
-            <directionalLight intensity={1.0} position={[2.2, 3.1, 4.2]} color="#8A0000" />
-            <directionalLight intensity={0.65} position={[-3.2, -2.1, 2.0]} color="#4F0000" />
-            <spotLight intensity={0.75} position={[0, 6, 6]} angle={0.78} penumbra={0.5} color="#CC1212" />
+            <ambientLight intensity={0.32} color="#1A0000" />
+            <directionalLight intensity={1.05} position={[2.2, 3.1, 4.2]} color="#8A0000" />
+            <directionalLight intensity={0.7} position={[-3.2, -2.1, 2.0]} color="#4F0000" />
+            <spotLight intensity={0.15} position={[0, 6, 6]} angle={0.78} penumbra={0.5} color="#CC1212" />
             <PointerGlow />
-            <Suspense fallback={<Html center className="text-red-200/80">Loading…</Html>}>
-              <Float rotationIntensity={0.025} floatIntensity={0.5} speed={0.75}>
-                <group scale={1.105}>
+            <Suspense fallback={<Html className="text-red-200/80"><div className="flex items-center justify-center">Loading…</div></Html>}>
+              <Float rotationIntensity={0.03} floatIntensity={0.55} speed={0.8}>
+                <group scale={1.1}>
                   <NeonCore />
                   <NeuralWeb />
                   <ParticleSwarm />
@@ -703,65 +559,34 @@ export default function Hero({ content }) {
               </Float>
               <MouseTrail />
               <BloodDrips />
-              {/* Off-center, lit ball */}
-              <BloodDripping3D />
               <Environment preset="night" />
             </Suspense>
             <ParallaxCameraTilt />
+            <AdaptiveDpr pixelated={false} />
+            <PerformanceMonitor />
+            <Preload all />
           </Canvas>
-        </div>
+        </motion.div>
       )}
     </section>
   )
 }
 
 /* =========================
-   Content animations
-   ========================= */
+  Content animations
+  ========================= */
 function EnhancedContentAnimations({ content }) {
   const c = content || {}
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.3,
-        delayChildren: 0.8
-      }
-    }
-  }
-
-  const itemVariants = {
-    hidden: {
-      opacity: 0,
-      y: 30,
-      scale: 0.98,
-      filter: "blur(6px)"
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      filter: "blur(0px)",
-      transition: {
-        type: "spring",
-        stiffness: 80,
-        damping: 14
-      }
-    }
-  }
-
   return (
-    <motion.div
-      className="relative z-10 mx-auto max-w-6xl px-4 text-center"
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-    >
-      <motion.div variants={itemVariants}>
+    <div className="relative z-10 mx-auto max-w-6xl px-4 text-center">
+      <motion.div
+        initial={{ x: -100, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ delay: 0.5, duration: 0.6, ease: "easeOut" }}
+      >
         <motion.p
-          className="text-sm tracking-wide text-red-200/70 drop-shadow-sm relative"
+          className="inline-flex items-center gap-2 rounded-full border border-red-500/30 bg-red-900/10 px-3 py-1 text-3xl md:text-4xl font-black tracking-tight text-red-200 drop-shadow-sm relative"
           whileHover={{ scale: 1.03, color: "#ff6b6b" }}
           transition={{ duration: 0.3 }}
         >
@@ -771,71 +596,51 @@ function EnhancedContentAnimations({ content }) {
             transition={{ duration: 1.2, delay: 1.0 }}
             className="absolute bottom-0 left-0 h-0.5 bg-red-400/50"
           />
-          {c.eyebrow || 'AI GENESIS'}
-        </motion.p>
-      </motion.div>
-
-      <motion.div variants={itemVariants}>
-        <motion.h1
-          className="mt-3 font-extrabold leading-tight text-[clamp(2.4rem,5.4vw,4.8rem)] tracking-[-0.02em] text-red-50 drop-shadow-lg relative"
-          whileHover={{ scale: 1.01 }}
-          transition={{ duration: 0.25 }}
-        >
-          {c.headline || 'The Future Starts Soon'}
-        </motion.h1>
-      </motion.div>
-
-      <motion.div variants={itemVariants}>
-        <motion.p
-          className="mx-auto mt-4 max-w-2xl text-red-100/70 drop-shadow-sm"
-          whileHover={{ color: "#fecaca" }}
-          transition={{ duration: 0.25 }}
-        >
-          {c.subhead || 'A new home for agents, vision, infrastructure, and consumer AI—crafted for builders, teams, and enterprises.'}
+          {c.eyebrow || 'AI GENESIS HACKATHON'}
         </motion.p>
       </motion.div>
 
       <motion.div
-        variants={itemVariants}
-        className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row"
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ delay: 1, duration: 0.8, type: "spring", stiffness: 100 }}
       >
-        <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} transition={{ duration: 0.2 }}>
-          <PrimaryButton
-            href={(c.primary_cta && c.primary_cta.href) || '#notify'}
-            aria-label={(c.primary_cta && c.primary_cta.label) || 'Get Early Access'}
-            className="relative overflow-hidden"
-          >
-            <motion.div
-              className="absolute inset-0 bg-red-400/20"
-              initial={{ x: "-100%" }}
-              whileHover={{ x: "100%" }}
-              transition={{ duration: 0.8 }}
-            />
-            <span className="relative z-10">
-              {(c.primary_cta && c.primary_cta.label) || 'Get Early Access'}
-            </span>
-          </PrimaryButton>
-        </motion.div>
-
-        <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} transition={{ duration: 0.2 }}>
-          <SecondaryButton
-            href={(c.secondary_cta && c.secondary_cta.href) || '#updates'}
-            aria-label={(c.secondary_cta && c.secondary_cta.label) || 'Follow Updates'}
-          >
-            {(c.secondary_cta && c.secondary_cta.label) || 'Follow Updates'}
-          </SecondaryButton>
-        </motion.div>
+        <motion.h1
+          className="mt-4 font-black leading-tight text-[clamp(2.6rem,5.8vw,5rem)] tracking-tight bg-gradient-to-r from-red-200 via-red-400 to-red-200 text-transparent bg-clip-text drop-shadow-[0_0_25px_rgba(239,68,68,0.25)] relative"
+          whileHover={{ scale: 1.01 }}
+          transition={{ duration: 0.25 }}
+        >
+          {c.headline || 'Innovate. Build. Win.'}
+        </motion.h1>
       </motion.div>
 
-      <motion.div variants={itemVariants}>
+      <motion.div
+        initial={{ x: 100, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ delay: 1.5, duration: 0.6, ease: "easeOut" }}
+      >
         <motion.p
-          className="mt-6 text-xs text-red-200/60 drop-shadow-sm"
-          animate={{ opacity: [0.6, 1, 0.6] }}
-          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+          className="mx-auto mt-5 max-w-2xl text-red-100/80 leading-relaxed drop-shadow-sm"
+          whileHover={{ color: "#fecaca" }}
+          transition={{ duration: 0.25 }}
         >
-          {c.trust_badge || 'Join the waitlist for early access'}
+          {c.subhead || 'Join the ultimate AI hackathon where visionaries, builders, and dreamers come together to shape the future of artificial intelligence.'}
         </motion.p>
       </motion.div>
-    </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 2, duration: 0.5, ease: "easeOut" }}
+      >
+        <motion.p
+          className="mt-6 text-xs text-red-200/60 drop-shadow-sm"
+          animate={{ scale: [1, 1.05, 1] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+        >
+          {c.trust_badge || 'October 15-17, 2024 | Register Now'}
+        </motion.p>
+      </motion.div>
+    </div>
   )
 }

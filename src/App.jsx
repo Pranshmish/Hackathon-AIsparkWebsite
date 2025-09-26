@@ -18,22 +18,7 @@ const lazySections = {
   CTABand: lazy(() => import('./components/CTABand.jsx')),
 }
 
-// Custom hook for reduced motion preference
-function useReducedMotionPreference() {
-  const query = '(prefers-reduced-motion: reduce)'
-  const [pref, setPref] = useState(
-    typeof window !== 'undefined' ? window.matchMedia(query).matches : false
-  )
-
-  useEffect(() => {
-    const m = window.matchMedia(query)
-    const listener = () => setPref(m.matches)
-    m.addEventListener('change', listener)
-    return () => m.removeEventListener('change', listener)
-  }, [])
-
-  return pref
-}
+// Custom hook for reduced motion preference - removed
 
 // Enhanced loading component with animations
 function LoadingFallback() {
@@ -69,36 +54,11 @@ function NavLink({ href, children, className = "" }) {
   )
 }
 
-// Enhanced motion toggle button
-function MotionToggle({ reduced, onToggle }) {
-  const [isHovered, setIsHovered] = useState(false)
-  return (
-    <button
-      aria-pressed={reduced}
-      aria-label="Toggle reduced motion"
-      onClick={onToggle}
-      className={`relative overflow-hidden rounded-md border px-3 py-2 text-sm font-medium transition-all duration-300 transform ${isHovered
-        ? 'border-red-500/50 bg-red-950/30 text-red-200 scale-105 shadow-lg shadow-red-500/20'
-        : 'border-gray-700/50 bg-gray-900/50 text-gray-200 hover:border-red-500/30'
-        }`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      {isHovered && <div className="absolute inset-0 bg-red-500/10 blur-sm" />}
-      <span className="relative z-10 flex items-center gap-2">
-        <div className={`w-2 h-2 rounded-full transition-all duration-300 ${reduced ? 'bg-red-500 animate-pulse' : 'bg-green-500 animate-pulse'}`} />
-        {reduced ? 'Motion: Off' : 'Motion: On'}
-      </span>
-      <div className="absolute inset-0 bg-red-500/20 opacity-0 transition-opacity duration-150 hover:opacity-100" />
-    </button>
-  )
-}
+// Enhanced motion toggle button - removed
 
 // Enhanced Header component (Updated nav to Coming Soon sections)
 function Header() {
-  const [reduced, setReduced] = useState(() => localStorage.getItem('reduce-motion') === 'true')
   const [isScrolled, setIsScrolled] = useState(false)
-  const systemReduce = useReducedMotionPreference()
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50)
@@ -106,18 +66,9 @@ function Header() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  useEffect(() => {
-    const shouldReduce = reduced || systemReduce
-    document.documentElement.classList.toggle('reduce-motion', shouldReduce)
-  }, [reduced, systemReduce])
-
-  useEffect(() => {
-    localStorage.setItem('reduce-motion', String(reduced))
-  }, [reduced])
-
   const links = [
     { label: 'About', href: '#about' },
-    { label: 'Sponsor', href: '#sponsors' },
+    { label: 'Sponsor Us', href: '#sponsor-us' },
     // Keeping original anchors commented for later use (do not remove)
     // { label: 'Tracks', href: '#tracks' },
     // { label: 'Prizes', href: '#prizes' },
@@ -141,18 +92,6 @@ function Header() {
           {links.map(l => (
             <NavLink key={l.label} href={l.href}>{l.label}</NavLink>
           ))}
-        </div>
-
-        <div className="flex items-center gap-4">
-          <PrimaryButton
-            as="a"
-            href="#notify"
-            className="hidden sm:inline-flex transform transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-red-500/25"
-            aria-label="Join the waitlist"
-          >
-            Notify Me
-          </PrimaryButton>
-          <MotionToggle reduced={reduced} onToggle={() => setReduced(prev => !prev)} />
         </div>
       </nav>
       <div className={`absolute bottom-0 left-1/2 transform -translate-x-1/2 h-px transition-all duration-500 ${isScrolled
@@ -227,6 +166,12 @@ export default function App() {
   // Expect Coming Soon JSON (updated): hero, about, sponsor/logos, keep others for later
   const { hero, logos, features, tracks, prizes, timeline, faq, final_cta } = content
 
+  // Persisted startup gate to avoid replay on remount/StrictMode
+  const [startupDone, setStartupDone] = useState(false)
+  const handleStartupComplete = () => {
+    setStartupDone(true)
+  }
+
   // Coming Soon render plan:
   // 1) Hero (Coming Soon) with motion graphics (inside Hero.jsx)
   // 2) About Us (new component)
@@ -235,9 +180,9 @@ export default function App() {
 
   const sections = [
     // Sponsor Us (LogoStrip) – repurposed title and optional CTA via props
-    { Component: lazySections.LogoStrip, props: { title: 'Sponsor Us', logos, cta: { label: 'Become a sponsor', href: 'mailto:team@aigenesis.dev' } } },
+    { Component: lazySections.LogoStrip, props: { title: 'Sponsor US', logos, cta: { label: 'Become a sponsor', href: 'mailto:team@aigenesis.dev' } } },
 
-    // About Us – new component file
+    // About Us – new component file (render first after hero)
     { Component: AboutUs, props: { id: 'about', title: 'About Us' } },
 
     // Kept but commented: original hackathon pages (do not remove)
@@ -260,10 +205,10 @@ export default function App() {
         </div>
 
         {/* Coming Soon Hero with motion graphics & 3D */}
-        <Hero content={hero} />
+        <Hero content={hero} onStartupComplete={handleStartupComplete} startupDone={startupDone} />
 
-        {/* Render only the chosen sections; others are commented above */}
-        {sections.map(({ Component, props }, idx) => (
+        {/* Render only after startup completes to avoid early flashes */}
+        {startupDone && sections.map(({ Component, props }, idx) => (
           <SectionWrapper key={idx}>
             <Suspense fallback={<LoadingFallback />}>
               <Component {...props} />

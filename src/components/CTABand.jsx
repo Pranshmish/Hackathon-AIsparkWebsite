@@ -33,7 +33,7 @@ function FloatingParticles() {
           }}
         />
       ))}
-      <style jsx>{`
+      <style>{`
         @keyframes float {
           0%, 100% { transform: translateY(0px) scale(1); opacity: 0.25; }
           50% { transform: translateY(-30px) scale(1.4); opacity: 0.4; }
@@ -110,7 +110,7 @@ function StatPill({ children, index }) {
         />
       )}
 
-      <style jsx>{`
+      <style>{`
         @keyframes expandRing {
           0% { transform: scale(1); opacity: 0.6; }
           100% { transform: scale(1.4); opacity: 0; }
@@ -234,7 +234,7 @@ function EnhancedButton({ children, className = "", isSecondary = false, ...prop
           )}
         </span>
 
-        <style jsx>{`
+        <style>{`
           @keyframes ripple {
             to {
               transform: scale(15);
@@ -366,7 +366,7 @@ export default function CTABand({
         <div className="mt-8 h-12 w-full bg-[radial-gradient(80%_150%_at_50%_130%,rgba(255,40,40,0.25),transparent_70%)] animate-pulse" />
       </div>
 
-      <style jsx>{`
+      <style>{`
         @keyframes float {
           0%, 100% { transform: translateY(0px) scale(1); opacity: 0.25; }
           50% { transform: translateY(-30px) scale(1.4); opacity: 0.4; }

@@ -18,7 +18,7 @@ function TechGrid() {
                     animation: 'gridPulse 9s ease-in-out infinite'
                 }}
             />
-            <style jsx>{`
+            <style>{`
         @keyframes gridPulse {
           0%, 100% { opacity: 0.03; transform: scale(1); }
           50% { opacity: 0.08; transform: scale(1.02); }
@@ -74,7 +74,7 @@ function FloatingParticles() {
                     }}
                 />
             ))}
-            <style jsx>{`
+            <style>{`
         @keyframes float {
           0%, 100% { transform: translateY(0px) scale(1); opacity: 0.10; }
           50% { transform: translateY(-16px) scale(1.15); opacity: 0.18; }
@@ -123,7 +123,7 @@ function FlowingBlood() {
                     animation: 'sheen 14s ease-in-out infinite'
                 }}
             />
-            <style jsx>{`
+            <style>{`
         @keyframes bloodFlow {
           0% { background-position: -200% 0; }
           100% { background-position: 200% 0; }
@@ -171,7 +171,7 @@ function BloodDrips() {
                     }}
                 />
             ))}
-            <style jsx>{`
+            <style>{`
         @keyframes drip {
           0%   { transform: translateY(-10%); opacity: 0; }
           10%  { opacity: 0.85; }
@@ -327,7 +327,7 @@ function AboutCard({ card, index }) {
                 )}
             </div>
 
-            <style jsx>{`
+            <style>{`
         @keyframes borderFlow {
           0% { transform: translateX(-100%) translateY(-100%); }
           50% { transform: translateX(100%) translateY(0%); }
@@ -389,15 +389,6 @@ export default function About({
                     {cards.map((card, index) => (
                         <AboutCard key={card.title} card={card} index={index} />
                     ))}
-                </div>
-
-                {/* Bottom info */}
-                <div className="text-center mt-16">
-                    <p className="text-gray-500 text-sm group cursor-default">
-                        <span className="text-red-400 group-hover:text-red-300 transition-colors duration-300">Build with purpose</span>
-                        <span className="mx-3">•</span>
-                        <span className="group-hover:text-gray-400 transition-colors duration-300">Make it real</span>
-                    </p>
                 </div>
             </div>
         </section>

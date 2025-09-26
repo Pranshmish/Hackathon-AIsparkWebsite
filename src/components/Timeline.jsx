@@ -32,7 +32,7 @@ function FloatingParticles() {
           }}
         />
       ))}
-      <style jsx>{`
+      <style>{`
         @keyframes float {
           0%, 100% { transform: translateY(0px) scale(1); opacity: 0.15; }
           50% { transform: translateY(-15px) scale(1.1); opacity: 0.25; }
@@ -96,7 +96,7 @@ function TimelineConnector({ isLast, isHovered }) {
           animation: isHovered ? 'fastPulse 0.5s ease-in-out infinite' : 'pulse 2s ease-in-out infinite'
         }}
       />
-      <style jsx>{`
+      <style>{`
         @keyframes pulse {
           0%, 100% { opacity: 0.3; }
           50% { opacity: 0.8; }
@@ -168,7 +168,7 @@ function StepNumber({ number, isActive = false, onHover }) {
         )}
       </span>
 
-      <style jsx>{`
+      <style>{`
         @keyframes expandRing {
           0% { transform: scale(1); opacity: 0.8; }
           100% { transform: scale(2.5); opacity: 0; }
@@ -289,7 +289,7 @@ function TimelineCard({ item, index, isActive, onCardHover }) {
         </>
       )}
 
-      <style jsx>{`
+      <style>{`
         @keyframes borderSweep {
           0% { transform: translateX(-100%); }
           100% { transform: translateX(100%); }
@@ -412,7 +412,7 @@ export default function Timeline({
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         @keyframes float {
           0%, 100% { transform: translateY(0px) scale(1); opacity: 0.15; }
           50% { transform: translateY(-15px) scale(1.1); opacity: 0.25; }

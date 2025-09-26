@@ -33,7 +33,7 @@ function FloatingParticles() {
           }}
         />
       ))}
-      <style jsx>{`
+      <style>{`
         @keyframes float {
           0%, 100% { transform: translateY(0px) scale(1); opacity: 0.2; }
           50% { transform: translateY(-25px) scale(1.3); opacity: 0.35; }
@@ -245,7 +245,7 @@ function FAQItem({ item, index, value, isOpen, onOpenChange }) {
         </div>
       </Accordion.Content>
 
-      <style jsx>{`
+      <style>{`
         @keyframes borderSweep {
           0% { transform: translateX(-100%); }
           100% { transform: translateX(100%); }
@@ -388,7 +388,7 @@ export default function FAQ({
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         @keyframes float {
           0%, 100% { transform: translateY(0px) scale(1); opacity: 0.2; }
           50% { transform: translateY(-25px) scale(1.3); opacity: 0.35; }

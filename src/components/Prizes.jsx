@@ -46,7 +46,7 @@ function SubtleGlow() {
           animation: 'subtleGlow 4s ease-in-out infinite'
         }}
       />
-      <style jsx>{`
+      <style>{`
         @keyframes subtleGlow {
           0%, 100% { opacity: 0.3; }
           50% { opacity: 0.6; }
@@ -88,7 +88,7 @@ function FloatingParticles() {
           }}
         />
       ))}
-      <style jsx>{`
+      <style>{`
         @keyframes float {
           0%, 100% { transform: translateY(0px) rotate(0deg); }
           50% { transform: translateY(-20px) rotate(180deg); }
@@ -273,7 +273,7 @@ export default function Prizes({
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         @keyframes subtleGlow {
           0%, 100% { opacity: 0.3; }
           50% { opacity: 0.6; }

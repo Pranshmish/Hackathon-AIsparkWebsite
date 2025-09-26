@@ -1,7 +1,7 @@
 {
   "seo": {
     "title": "AI GENESIS — Coming Soon",
-    "description": "AI GENESIS is a new platform for next‑generation AI products and research. Sign up to get early access and updates as we unveil what’s next.",
+    "description": "AI GENESIS is a new platform for next-generation AI products and research. Sign up to get early access and updates as we unveil what’s next.",
     "og_image": "/og/aigenesis.png"
   },
   "header": {
@@ -36,23 +36,32 @@
     },
     "trust_badge": "Join the waitlist for early access"
   },
-  "logos": [
-    "/logos/a.svg",
-    "/logos/b.svg",
-    "/logos/c.svg",
-    "/logos/d.svg"
-  ],
+  "sponsor_us": {
+    "title": "Sponsor Us",
+    "subhead": "Be a part of the AI GENESIS journey",
+    "body": "We’re building the next wave of AI innovation — from agentic systems to scalable infrastructure. Partner with us as a sponsor and gain visibility with early adopters, developers, enterprises, and the broader AI community.",
+    "benefits": [
+      "Showcase your brand at the forefront of AI innovation",
+      "Get exposure to builders, researchers, and enterprises",
+      "Collaborate with the GENESIS community on future projects",
+      "Exclusive networking and co-branding opportunities"
+    ],
+    "cta": {
+      "label": "Become a Sponsor",
+      "href": "#sponsor"
+    }
+  },
   "features": {
     "title": "What to Expect",
     "items": [
       {
         "icon": "zap",
         "title": "Agentic Systems",
-        "body": "Production‑grade agents with tools, memory, and guardrails for real‑world workflows."
+        "body": "Production-grade agents with tools, memory, and guardrails for real-world workflows."
       },
       {
         "icon": "sparkles",
-        "title": "Human‑Centered Design",
+        "title": "Human-Centered Design",
         "body": "Thoughtful UX, accessibility, and collaboration features built in from day one."
       },
       {
@@ -68,7 +77,7 @@
     "cards": [
       {
         "title": "Agents",
-        "body": "Autonomous and semi‑autonomous workflows with tools, memory, and review."
+        "body": "Autonomous and semi-autonomous workflows with tools, memory, and review."
       },
       {
         "title": "Vision",
@@ -93,7 +102,7 @@
       },
       {
         "name": "Beta Access",
-        "value": "Invite‑only"
+        "value": "Invite-only"
       },
       {
         "name": "Public Preview",
